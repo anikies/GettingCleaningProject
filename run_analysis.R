@@ -16,15 +16,17 @@ titlesWithMean<-grep("\\b[Mm]ean()\\b", names(dataMerge), value=TRUE)
 titlesWithStd<-grep("\\b[Ss]td()\\b", names(dataMerge), value=TRUE)  
 titlesTotal <- c(titlesWithMean,titlesWithStd)
 
+dataTrain<-dataTrain[titlesTotal]
+
 dataTrainFilter<-dataTrain[titlesTotal]
 dataTestFilter<-dataTest[titlesTotal]
 
-dataTrainFilter$activity <- trainActivities[,]
-dataTrainFilter$subject <- trainSubjects[,]
-dataTestFilter$activity <- testActivities[,]
-dataTestFilter$subject <- testSubjects[,]
+dataTrain$activity <- trainActivities[,]
+dataTrain$subject <- trainSubjects[,]
+dataTest$activity <- testActivities[,]
+dataTest$subject <- testSubjects[,]
 
-dataMerge <- rbind(dataTrainFilter, dataTestFilter)
+dataMerge <- rbind(dataTrain, dataTest)
 
 dataMerge$activity[dataMerge$activity=="1"] <- "WALKING"  
 dataMerge$activity[dataMerge$activity=="2"] <- "WALKING_UPSTAIRS"
@@ -33,11 +35,13 @@ dataMerge$activity[dataMerge$activity=="4"] <- "SITTING"
 dataMerge$activity[dataMerge$activity=="5"] <- "STANDING"
 dataMerge$activity[dataMerge$activity=="6"] <- "LAYING"
 
+
 names(dataMerge)<-sub("Acc","Accelerator",names(dataMerge))  
 names(dataMerge)<-sub("Gyro","Gyroscope",names(dataMerge))
 names(dataMerge)<-sub("Mag","Magnitude",names(dataMerge))
 names(dataMerge)<-sub("\\(\\)","",names(dataMerge))  
 
+summary(dataMerge)
+
 melted <- melt(dataMerge, id.vars=c("activity", "subject"))
 dataGroupAvg<-dcast(melted,activity+subject~variable,mean)
-write.table(dataGroupAvg,file="Datatotal.txt",row.name=FALSE)

@@ -12,23 +12,22 @@ testSubjects <- read.table("UCI HAR Dataset/test/subject_test.txt")
 colnames(dataTrain) <- features[,2]
 colnames(dataTest) <- features[,2]
 
-titlesWithMean<-grep("\\b[Mm]ean()\\b", names(dataMerge), value=TRUE)  
-titlesWithStd<-grep("\\b[Ss]td()\\b", names(dataMerge), value=TRUE)  
+titlesWithMean<-grep("\\b[Mm]ean()\\b", names(dataTrain), value=TRUE)  
+titlesWithStd<-grep("\\b[Ss]td()\\b", names(dataTrain), value=TRUE)  
 
 titlesTotal <- c(titlesWithMean,titlesWithStd)
-
-dataTrain<-dataTrain[titlesTotal]
-dataTest<-dataTest[titlesTotal]
 
 dataTrainFilter<-dataTrain[titlesTotal]
 dataTestFilter<-dataTest[titlesTotal]
 
-dataTrain$activity <- trainActivities[,]
-dataTrain$subject <- trainSubjects[,]
-dataTest$activity <- testActivities[,]
-dataTest$subject <- testSubjects[,]
+dataTrainFilter$activity <- trainActivities[,]
+dataTrainFilter$subject <- trainSubjects[,]
+dataTestFilter$activity <- testActivities[,]
+dataTestFilter$subject <- testSubjects[,]
 
-dataMerge <- rbind(dataTrain, dataTest)
+
+
+dataMerge <- rbind(dataTrainFilter, dataTestFilter)
 
 dataMerge$activity[dataMerge$activity=="1"] <- "WALKING"  
 dataMerge$activity[dataMerge$activity=="2"] <- "WALKING_UPSTAIRS"
@@ -43,10 +42,11 @@ names(dataMerge)<-sub("Gyro","Gyroscope",names(dataMerge))
 names(dataMerge)<-sub("Mag","Magnitude",names(dataMerge))
 names(dataMerge)<-sub("\\(\\)","",names(dataMerge))  
 
-summary(dataMerge)
-
 melted <- melt(dataMerge, id.vars=c("activity", "subject"))
 dataGroupAvg<-dcast(melted,activity+subject~variable,mean)
-write.table(dataGroupAvg,file="Datatotal.txt",row.name=FALSE)
+write.table(dataGroupAvg,file="DataGroupAvg",row.name=FALSE)
+
+
+
 
 

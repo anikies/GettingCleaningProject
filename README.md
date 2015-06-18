@@ -5,7 +5,6 @@
 ###### 4. Appropriately labels the data set with descriptive variable names.   
 ###### 5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.    
 
-
     dataTrain <- read.table("UCI HAR Dataset/train/X_train.txt")  
     dataTest <- read.table("UCI HAR Dataset/test/X_test.txt")  
     
@@ -24,7 +23,6 @@
     titlesWithStd<-grep("\\b[Ss]td()\\b", names(dataMerge), value=TRUE)  
     titlesTotal <- c(titlesWithMean,titlesWithStd)
 
-
     dataTrainFilter<-dataTrain[titlesTotal]
     dataTestFilter<-dataTest[titlesTotal]
 
@@ -42,15 +40,10 @@
     dataMerge$activity[dataMerge$activity=="5"] <- "STANDING"
     dataMerge$activity[dataMerge$activity=="6"] <- "LAYING"
   
-
     names(dataMerge)<-sub("Acc","Accelerator",names(dataMerge))  
     names(dataMerge)<-sub("Gyro","Gyroscope",names(dataMerge))
     names(dataMerge)<-sub("Mag","Magnitude",names(dataMerge))
     names(dataMerge)<-sub("\\(\\)","",names(dataMerge))  
-
-    testSubjects <- read.table("UCI HAR Dataset/test/subject_test.txt")
-    trainSubjects <- read.table("UCI HAR Dataset/train/subject_train.txt")  
-    
 
     melted <- melt(dataMerge, id.vars=c("activity", "subject"))
     dataGroupAvg<-dcast(melted,activity+subject~variable,mean)

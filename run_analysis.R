@@ -14,9 +14,11 @@ colnames(dataTest) <- features[,2]
 
 titlesWithMean<-grep("\\b[Mm]ean()\\b", names(dataMerge), value=TRUE)  
 titlesWithStd<-grep("\\b[Ss]td()\\b", names(dataMerge), value=TRUE)  
+
 titlesTotal <- c(titlesWithMean,titlesWithStd)
 
 dataTrain<-dataTrain[titlesTotal]
+dataTest<-dataTest[titlesTotal]
 
 dataTrainFilter<-dataTrain[titlesTotal]
 dataTestFilter<-dataTest[titlesTotal]
@@ -45,3 +47,4 @@ summary(dataMerge)
 
 melted <- melt(dataMerge, id.vars=c("activity", "subject"))
 dataGroupAvg<-dcast(melted,activity+subject~variable,mean)
+write.table(dataGroupAvg,file="Datatotal.txt",row.name=FALSE)

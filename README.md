@@ -1,16 +1,9 @@
-# GettingCleaningProject
-###The script run_analysis does the following:
-#### 1. Merges the training and the test sets to create on tye data set.
-##### 1.1. Read de data sets in a data frame
-#### 2. Extracts only the measurements on the mean and standard deviation for each measurement. 
-#### 3. Uses descriptive activity names to name the activities in the data set
-##### 3.1. Read de data set activities in a data frame
-##### 3.2 Add columns with activities data set names to dataMerge data frame  
-##### 3.3. Rename activity names
-#### 4. Appropriately labels the data set with descriptive variable names.                                       
-#### 5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable 
-##### 5.1. Read de data set subjects in a data frame for each activity and each subject. 
-#### 5.2 Add column with subjects data set names to dataMerge data frame         
+####You should create one R script called run_analysis.R that does the following. 
+###Merges the training and the test sets to create one data set.  
+###Extracts only the measurements on the mean and standard deviation for each measurement.  
+###Uses descriptive activity names to name the activities in the data set  
+###Appropriately labels the data set with descriptive variable names.   
+###From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.    
 
 
     dataTrain <- read.table("UCI HAR Dataset/train/X_train.txt")  

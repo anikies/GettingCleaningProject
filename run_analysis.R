@@ -1,37 +1,43 @@
-projectCoursera <- function(){
-  # Crear variables de los dataframes trainData, testData y features
-  # Recorrer el dataframe feature
-  # Cambiar el nombre la primera columna de trainData y testData por el primer valor de features
+dataTrain <- read.table("UCI HAR Dataset/train/X_train.txt")  
+dataTest <- read.table("UCI HAR Dataset/test/X_test.txt")  
 
+features <- read.table("UCI HAR Dataset/features.txt") 
 
-  #if (nrow(dataTrain) == 0 && nrow(dataTest) == 0 &&  nrow(features) == 0) {
-    dataTrain <- read.table("train/X_train.txt")
-    dataTest <- read.table("test/X_test.txt")
-    features <- read.table("features.txt")
-  #}
- 
-    colnames(dataTrain) <- features[,2]
-    colnames(dataTest) <- features[,2]
-  
-  #Se añaden los valores de actividades y participantes a dataTrain y dataTest
+trainActivities <- read.table("UCI HAR Dataset/train/y_train.txt")
+trainSubjects <- read.table("UCI HAR Dataset/train/subject_train.txt")
 
-  #if (nrow(trainActivities) == 0)  {
-    trainActivities <- read.table("train/y_train.txt")
-    trainSubjects <- read.table("train/subject_train.txt")
-    testActivities <- read.table("test/y_test.txt")
-    testSubjects <- read.table("test/subject_test.txt")
-  #}
+testActivities <- read.table("UCI HAR Dataset/test/y_test.txt")
+testSubjects <- read.table("UCI HAR Dataset/test/subject_test.txt")
 
-  dataTrain$activity <- trainActivities
-  dataTrain$subject <- trainSubjects
-  dataTest$activity <- testActivities
-  dataTest$subject <- testSubjects
-  
-    #Busco nombres de columna que tengan "mean()"
-  titlesWithMean<-grep("\\b[Mm]ean()\\b", names(dataTest), value=TRUE)
-  titlesWithStd<-grep("\\b[Ss]td()\\b", names(dataTest), value=TRUE)
-  #print (titlesWithMean)  
-  #print (titlesWithStd)
-  titlesTotal <- c(titlesWithMean,titlesWithStd)
-  dataTrain[titlesTotal]
-}
+colnames(dataTrain) <- features[,2]
+colnames(dataTest) <- features[,2]
+
+titlesWithMean<-grep("\\b[Mm]ean()\\b", names(dataMerge), value=TRUE)  
+titlesWithStd<-grep("\\b[Ss]td()\\b", names(dataMerge), value=TRUE)  
+titlesTotal <- c(titlesWithMean,titlesWithStd)
+
+dataTrainFilter<-dataTrain[titlesTotal]
+dataTestFilter<-dataTest[titlesTotal]
+
+dataTrainFilter$activity <- trainActivities[,]
+dataTrainFilter$subject <- trainSubjects[,]
+dataTestFilter$activity <- testActivities[,]
+dataTestFilter$subject <- testSubjects[,]
+
+dataMerge <- rbind(dataTrainFilter, dataTestFilter)
+
+dataMerge$activity[dataMerge$activity=="1"] <- "WALKING"  
+dataMerge$activity[dataMerge$activity=="2"] <- "WALKING_UPSTAIRS"
+dataMerge$activity[dataMerge$activity=="3"] <- "WALKING_DOWNSTAIRS"
+dataMerge$activity[dataMerge$activity=="4"] <- "SITTING"
+dataMerge$activity[dataMerge$activity=="5"] <- "STANDING"
+dataMerge$activity[dataMerge$activity=="6"] <- "LAYING"
+
+names(dataMerge)<-sub("Acc","Accelerator",names(dataMerge))  
+names(dataMerge)<-sub("Gyro","Gyroscope",names(dataMerge))
+names(dataMerge)<-sub("Mag","Magnitude",names(dataMerge))
+names(dataMerge)<-sub("\\(\\)","",names(dataMerge))  
+
+melted <- melt(dataMerge, id.vars=c("activity", "subject"))
+dataGroupAvg<-dcast(melted,activity+subject~variable,mean)
+write.table(dataGroupAvg,file="Datatotal.txt",row.name=FALSE)

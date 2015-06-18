@@ -48,3 +48,5 @@ summary(dataMerge)
 melted <- melt(dataMerge, id.vars=c("activity", "subject"))
 dataGroupAvg<-dcast(melted,activity+subject~variable,mean)
 write.table(dataGroupAvg,file="Datatotal.txt",row.name=FALSE)
+
+

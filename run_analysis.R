@@ -47,7 +47,7 @@ names(dataMerge)<-sub("\\(\\)","",names(dataMerge))
 
 melted <- melt(dataMerge, id.vars=c("activity", "subject"))
 dataGroupAvg<-dcast(melted,activity+subject~variable,mean)
-write.table(dataGroupAvg,file="DataGroupAvg",row.name=FALSE)
+write.table(dataGroupAvg,file="DataGroupAvg.txt",row.name=FALSE)
 
 
 

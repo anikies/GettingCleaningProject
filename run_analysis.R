@@ -1,4 +1,6 @@
-library(dplyr)  
+library(dplyr)      
+library(reshape2)
+
 dataTrain <- read.table("UCI HAR Dataset/train/X_train.txt")  
 dataTest <- read.table("UCI HAR Dataset/test/X_test.txt")  
 

@@ -25,9 +25,24 @@ The script run_analysis does the following:
     testActivities <- read.table("UCI HAR Dataset/test/y_test.txt")
     testSubjects <- read.table("UCI HAR Dataset/test/subject_test.txt")
 
-##### 3.1 Rename the columns with activities and subjects data set names      
+##### 3.2 Add columns with activities and subjects data set names to dataMerge data frame     
     activities<-rbind(trainActivities,testActivities) 
     dataMerge$activity <- activities
     
     subjects<-rbind(trainSubjects,testSubjects)
     dataMerge$subject <- subjects
+    
+##### 3.3. Rename activity names
+    dataMerge$activity[dataMerge$activity=="1"] <- "WALKING"  
+    dataMerge$activity[dataMerge$activity=="2"] <- "WALKING_UPSTAIRS"
+    dataMerge$activity[dataMerge$activity=="3"] <- "WALKING_DOWNSTAIRS"
+    dataMerge$activity[dataMerge$activity=="4"] <- "SITTING"
+    dataMerge$activity[dataTotal$activity=="5"] <- "STANDING"
+    dataMerge$activity[dataMerge$activity=="6"] <- "LAYING"
+  
+#### 4. Appropriately labels the data set with descriptive variable names.                                       
+    names(dataMerge$activity)<-sub("Acc","Accelerator",names(dataMerge$activity))  
+    names(dataMerge$activity)<-sub("Gyro","Gyroscope",names(dataMerge$activity))
+    names(dataMerge$activity)<-sub("Mag","Magnitude",names(dataMerge$activity))
+    names(dataMerge$activity)<-sub("\\(\\)","",names(dataMerge$activity))  
+    

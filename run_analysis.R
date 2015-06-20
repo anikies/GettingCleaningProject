@@ -68,7 +68,7 @@
     
 #### 5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.    
 ###### 5.1 Select the id variables (activity and subject) and the measurements variables (rest)   
-    melted <- melt(dataSet.1 ,id.vars=c("activity", "subject"))
+    melted <- melt(tidyset.1 ,id.vars=c("activity", "subject"))
     tidyset<-dcast(melted,activity+subject~variable,mean)
  
     write.table(tidyset,file="tidyset.txt",row.name=FALSE) 

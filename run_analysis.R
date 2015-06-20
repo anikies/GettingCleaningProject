@@ -71,4 +71,4 @@
     melted <- melt(tidyset.1 ,id.vars=c("activity", "subject"))
     tidyset<-dcast(melted,activity+subject~variable,mean)
  
-    write.table(tidyset,file="tidyset.txt",row.name=FALSE) 
+    write.table(tidyset,file="UCI HAR Dataset/tidyset.txt",row.name=FALSE) 

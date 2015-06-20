@@ -6,9 +6,9 @@
     
     features <- read.table("UCI HAR Dataset/features.txt")
   
-    dataMerge <- rbind(dataTrain, dataTest)
+    dataSet.1 <- rbind(dataTrain, dataTest)
   
-    colnames(dataMerge) <- features[,2]
+    colnames(dataSet.1) <- features[,2]
     colnames(dataTrain) <- features[,2]
     colnames(dataTest) <- features[,2]
     
@@ -17,12 +17,12 @@
     testActivities <- read.table("UCI HAR Dataset/test/y_test.txt")
     testSubjects <- read.table("UCI HAR Dataset/test/subject_test.txt")
 
-    titlesWithMean<-grep("\\b[Mm]ean()\\b", names(dataMerge), value=TRUE)
-    titlesWithStd<-grep("\\b[Ss]td()\\b", names(dataMerge), value=TRUE)
+    titlesWithMean<-grep("\\b[Mm]ean()\\b", names(dataSet.1 ), value=TRUE)
+    titlesWithStd<-grep("\\b[Ss]td()\\b", names(dataSet.1 ), value=TRUE)
 
     titlesTotal <- c(titlesWithMean,titlesWithStd)
     
-    dataMerge <- dataMerge[titlesTotal]
+    dataSet.1 <- dataSet.1[titlesTotal]
   
     dataTrainFilter<-dataTrain[titlesTotal]
     dataTestFilter<-dataTest[titlesTotal]
@@ -31,26 +31,28 @@
     dataTrainFilter$subject <- trainSubjects[,]
     dataTestFilter$activity <- testActivities[,]
     dataTestFilter$subject <- testSubjects[,]
-  
-    
+ 
     dataFilterActivity<-c(dataTrainFilter$activity,dataTestFilter$activity)
     dataFilterSubject<-c(dataTrainFilter$subject,dataTestFilter$subject)
     
-    dataMerge$activity<-dataFilterActivity
-    dataMerge$subject<-dataFilterSubject
+    dataSet.1$activity<-dataFilterActivity
+    dataSet.1$subject<-dataFilterSubject
  
-    dataMerge$activity[dataMerge$activity=="1"] <- "WALKING"
-    dataMerge$activity[dataMerge$activity=="2"] <- "WALKING_UPSTAIRS"
-    dataMerge$activity[dataMerge$activity=="3"] <- "WALKING_DOWNSTAIRS"
-    dataMerge$activity[dataMerge$activity=="4"] <- "SITTING"
-    dataMerge$activity[dataMerge$activity=="5"] <- "STANDING"
-    dataMerge$activity[dataMerge$activity=="6"] <- "LAYING"
+    dataSet.1$activity[dataSet.1$activity=="1"] <- "WALKING"
+    dataSet.1$activity[dataSet.1$activity=="2"] <- "WALKING_UPSTAIRS"
+    dataSet.1$activity[dataSet.1$activity=="3"] <- "WALKING_DOWNSTAIRS"
+    dataSet.1$activity[dataSet.1$activity=="4"] <- "SITTING"
+    dataSet.1$activity[dataSet.1$activity=="5"] <- "STANDING"
+    dataSet.1$activity[dataSet.1$activity=="6"] <- "LAYING"
   
-    names(dataMerge)<-sub("Acc","Accelerator",names(dataMerge))  
-    names(dataMerge)<-sub("Gyro","Gyroscope",names(dataMerge))
-    names(dataMerge)<-sub("Mag","Magnitude",names(dataMerge))
-    names(dataMerge)<-sub("\\(\\)","",names(dataMerge))  
+    names(dataSet.1)<-sub("Acc","Accelerator",names(dataSet.1))  
+    names(dataSet.1)<-sub("Gyro","Gyroscope",names(dataSet.1))
+    names(dataSet.1)<-sub("Mag","Magnitude",names(dataSet.1))
+    names(dataSet.1)<-sub("\\(\\)","",names(dataSet.1))  
   
-    melted <- melt(dataMerge, id.vars=c("activity", "subject"))
-    dataGroupAvg<-dcast(melted,activity+subject~variable,mean)
-    write.table(dataGroupAvg,file="DataGroupAvg.txt",row.name=FALSE) 
+    dataSet.1
+    
+    melted <- melt(dataSet.1 ,id.vars=c("activity", "subject"))
+    dataSet.5<-dcast(melted,activity+subject~variable,mean)
+ 
+    write.table(dataSet.5,file="DataGroupAvg.txt",row.name=FALSE) 

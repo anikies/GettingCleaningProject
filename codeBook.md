@@ -1,5 +1,6 @@
 The tidy data set contains a total of 68 variables. As listed below:
-
+ activity                                 
+ subject   
  tBodyAccelerator-mean-X                
  tBodyAccelerator-mean-Y                
  tBodyAccelerator-mean-Z               
@@ -66,5 +67,4 @@ fBodyAcceleratorMagnitude-std
 fBodyBodyAcceleratorJerkMagnitude-std    
 fBodyBodyGyroscopeMagnitude-std          
 fBodyBodyGyroscopeJerkMagnitude-std    
-activity                                 
-subject    
+ 
